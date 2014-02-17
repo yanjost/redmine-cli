@@ -1,0 +1,5 @@
+recursive-include tests *.py
+
+include AUTHORS
+include LICENSE
+include README.rst
