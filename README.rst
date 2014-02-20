@@ -3,12 +3,27 @@ Redmine Cli
 
 This is a small command-line utility to interact with Redmine
 
+Installation
+-----------------
+
+I suggest you create a `virtualenv <http://www.virtualenv.org>`_
+
+Then just use pip or easy_install.
+
+
+    pip install redmine-cli
+
+or
+
+    easy_install redmine-cli
+
+
 Usage
 -----
 
 You have to configure the application by getting a REST API key for your Redmine user
 
-Then edit the configuration file in your home directory
+Then edit the configuration file in your home directory ( ~/.redmine-cli )
 
 
     [default]
@@ -48,3 +63,9 @@ Command-line syntax
       -h, --help            show this help message and exit
       --key APIKEY          set API key
       --debug               write received data in debug.json
+
+
+Bugs, feature requests, etc...
+-------------------------------
+
+Please use Github's issue tracker : https://github.com/yanjost/redmine-cli/issues
