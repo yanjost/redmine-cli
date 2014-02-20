@@ -10,10 +10,13 @@ I suggest you create a `virtualenv <http://www.virtualenv.org>`_
 
 Then just use pip or easy_install.
 
+.. code::
 
     pip install redmine-cli
 
 or
+
+.. code::
 
     easy_install redmine-cli
 
@@ -25,30 +28,28 @@ You have to configure the application by getting a REST API key for your Redmine
 
 Then edit the configuration file in your home directory ( ~/.redmine-cli )
 
+.. code:: ini
 
     [default]
-
     key=YOUR_REDMINE_REST_API_KEY
-
     my_id=YOUR_REDMINE_USER_ID
-
     root_url=YOUR_REDMINE_ROOT_URL_WITH_PROTOCOL
 
 
 Example values
 
+.. code:: ini
 
     [default]
-
     key=c7461a8ed1e4c27b76ce3bec0c0f06f4
-
     my_id=44
-
     root_url=https://redmine.mycompany.com
 
 
 Command-line syntax
 --------------------
+
+.. code:: console
 
     usage: redmine [-h] [--key APIKEY] [--debug] {query,issues,open,issue} ...
 
@@ -68,6 +69,7 @@ Command-line syntax
 Sample output
 --------------
 
+.. code::
 
     +------+----------+-------------+---------------------------+
     |  ID  | PRIORITY |    STATUS   |    TITLE                  |
