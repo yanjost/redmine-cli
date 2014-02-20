@@ -65,6 +65,18 @@ Command-line syntax
       --debug               write received data in debug.json
 
 
+Sample output
+--------------
+
+
+    +------+----------+-------------+---------------------------+
+    |  ID  | PRIORITY |    STATUS   |    TITLE                  |
+    +------+----------+-------------+---------------------------+
+    | 6534 |   High   | In Progress | Issue 1                   |
+    | 4081 |  Normal  |   Feedback  | Issue 2                   |
+    +------+----------+-------------+---------------------------+
+
+
 Bugs, feature requests, etc...
 -------------------------------
 
