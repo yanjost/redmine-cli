@@ -1,0 +1,6 @@
+Redmine_CLI.egg-info
+build
+dist
+venv
+.idea
+**/*.pyc
