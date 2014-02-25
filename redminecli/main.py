@@ -15,6 +15,7 @@ config_file_path = "~/.redmine-cli"
 api_key = None
 root_url = None
 debug_mode = False
+user_id = None
 
 global config_obj
 config_obj = None
@@ -32,7 +33,7 @@ def get_config_instance(instance_url):
     get_config()
     # assert isinstance(config_obj, ConfigParser.ConfigParser)
     if not config_obj.has_section(instance_url):
-        raise Exception("No config found for instance "+instance_url)
+        return {}
     return dict(config_obj.items(instance_url))
 
 @memoizer.memoize
@@ -41,7 +42,8 @@ def get_log_file_path():
     return os.path.join(os.getcwd(),"debug.json")
 
 def build_url(path):
-    root_url = get_config_instance("default").get("root_url", None)
+    global root_url
+    root_url = get_config_instance("default").get("root_url", root_url)
     if root_url is None:
         raise Exception("Missing Root URL")
     return root_url + path
@@ -75,7 +77,8 @@ def print_issues(data):
     print table
 
 def cmd_issues(args):
-    user_id = get_config_instance("default").get("my_id", None)
+    global user_id
+    user_id = get_config_instance("default").get("my_id", user_id)
     data = get_json("/issues.json",{"assigned_to_id":user_id, })
 
     print_issues(data)
@@ -97,13 +100,15 @@ def cmd_open(args):
     webbrowser.open(build_url("/issues/{}".format(args.issue_id)))
 
 def main():
-    global debug_mode
+    global debug_mode, api_key, root_url, user_id
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
     parser.add_argument("--key", metavar="APIKEY", default=None, help="set API key")
     parser.add_argument("--debug", action="store_true", default=False, help="write received data in debug.json")
+    parser.add_argument("--root-url", help="root url of Redmine instance")
+    parser.add_argument("--user-id", help="your Redmine user id")
 
     parser_query = subparsers.add_parser('query', help="run a saved query by id")
     parser_query.add_argument("project")
@@ -125,5 +130,8 @@ def main():
     args = parser.parse_args()
 
     debug_mode = args.debug
+    api_key = args.key
+    root_url = args.root_url
+    user_id = args.user_id
 
     args.func(args)
