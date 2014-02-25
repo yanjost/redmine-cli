@@ -9,6 +9,8 @@ import ConfigParser
 import json
 import os
 
+from . import __version__
+
 
 config_file_path = "~/.redmine-cli"
 
@@ -109,6 +111,8 @@ def main():
     parser.add_argument("--debug", action="store_true", default=False, help="write received data in debug.json")
     parser.add_argument("--root-url", help="root url of Redmine instance")
     parser.add_argument("--user-id", help="your Redmine user id")
+
+    parser.add_argument('--version', action='version', version='{}.{}.{}'.format(*__version__))
 
     parser_query = subparsers.add_parser('query', help="run a saved query by id")
     parser_query.add_argument("project")
