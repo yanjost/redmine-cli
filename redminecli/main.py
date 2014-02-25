@@ -2,21 +2,19 @@
 
 import requests
 import prettytable
+import memoizer
 
 import argparse
 import ConfigParser
 import json
 import os
 
+
 config_file_path = "~/.redmine-cli"
 
 api_key = None
 root_url = None
-
-#FIXME
-current_dir = os.path.dirname(os.path.realpath(__file__))
-
-logfile = os.path.join(current_dir,"debug.json")
+debug_mode = False
 
 global config_obj
 config_obj = None
@@ -37,6 +35,11 @@ def get_config_instance(instance_url):
         raise Exception("No config found for instance "+instance_url)
     return dict(config_obj.items(instance_url))
 
+@memoizer.memoize
+def get_log_file_path():
+    import os
+    return os.path.join(os.getcwd(),"debug.json")
+
 def build_url(path):
     root_url = get_config_instance("default").get("root_url", None)
     if root_url is None:
@@ -44,6 +47,7 @@ def build_url(path):
     return root_url + path
 
 def get_json(url, params=None):
+    global debug_mode
     key = get_config_instance("default").get("key", api_key)
     if key is None:
         raise Exception("Missing API key : please provide one in config file or with the command line")
@@ -55,7 +59,7 @@ def get_json(url, params=None):
     except :
         print "url called : ",url, params, api_key
         raise
-    open(logfile,'w').write(json.dumps(data,indent=True))
+    if debug_mode: open(get_log_file_path(),'w').write(json.dumps(data,indent=True))
     return data
 
 def print_issues(data):
@@ -93,6 +97,8 @@ def cmd_open(args):
     webbrowser.open(build_url("/issues/{}".format(args.issue_id)))
 
 def main():
+    global debug_mode
+
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
@@ -117,5 +123,7 @@ def main():
     parser_issue.set_defaults(func=cmd_issue)
 
     args = parser.parse_args()
+
+    debug_mode = args.debug
 
     args.func(args)

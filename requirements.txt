@@ -1,3 +1,4 @@
 asciitable==0.8.0
 prettytable==0.7.2
 requests==2.2.0
+memoizer==0.0.1
