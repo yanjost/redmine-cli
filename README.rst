@@ -51,7 +51,9 @@ Command-line syntax
 
 .. code:: console
 
-    usage: redmine [-h] [--key APIKEY] [--debug] {query,issues,open,issue} ...
+    usage: redmine [-h] [--key APIKEY] [--debug] [--root-url ROOT_URL]
+                   [--user-id USER_ID] [--version]
+                   {query,issues,open,issue} ...
 
     positional arguments:
       {query,issues,open,issue}
@@ -64,6 +66,9 @@ Command-line syntax
       -h, --help            show this help message and exit
       --key APIKEY          set API key
       --debug               write received data in debug.json
+      --root-url ROOT_URL   root url of Redmine instance
+      --user-id USER_ID     your Redmine user id
+      --version             show program's version number and exit
 
 
 Sample output
