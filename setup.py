@@ -7,7 +7,11 @@ from redminecli import __version__
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-requirements = ["requests","prettytable"]
+requirements = [
+    "prettytable==0.7.2",
+    "requests==2.2.0",
+    "memoizer==0.0.1"
+]
 
 setup(
     name = "Redmine-CLI",
