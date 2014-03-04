@@ -6,3 +6,5 @@ python:
   - "3.3"
 # command to install dependencies
 install: "pip install ."
+# just to test if command launches
+script: redmine
