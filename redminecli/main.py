@@ -18,6 +18,7 @@ api_key = None
 root_url = None
 debug_mode = False
 user_id = None
+verify_ssl = True
 
 global config_obj
 config_obj = None
@@ -53,13 +54,14 @@ def build_url(path):
 def get_json(url, params=None):
     global debug_mode
     key = get_config_instance("default").get("key", api_key)
+    ssl = (get_config_instance("default").get("verify_ssl", verify_ssl) == "True")
     if key is None:
         raise Exception("Missing API key : please provide one in config file or with the command line")
 
     url = build_url(url)
     data = None
     try :
-        data = requests.get(url,params=params,auth=(key,"")).json()
+        data = requests.get(url,verify=ssl,params=params,auth=(key,"")).json()
     except :
         print "url called : ",url, params, api_key
         raise
@@ -102,7 +104,7 @@ def cmd_open(args):
     webbrowser.open(build_url("/issues/{}".format(args.issue_id)))
 
 def main():
-    global debug_mode, api_key, root_url, user_id
+    global debug_mode, api_key, root_url, user_id, verify_ssl
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
