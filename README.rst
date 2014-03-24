@@ -34,6 +34,8 @@ Then edit the configuration file in your home directory ( ~/.redmine-cli )
     key=YOUR_REDMINE_REST_API_KEY
     my_id=YOUR_REDMINE_USER_ID
     root_url=YOUR_REDMINE_ROOT_URL_WITH_PROTOCOL
+    #change to false if you don't want to verify SSL certificates. default is true
+    verify_ssl=true
 
 
 Example values
