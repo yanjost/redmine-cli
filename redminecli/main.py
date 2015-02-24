@@ -7,9 +7,14 @@ import prettytable
 import memoizer
 
 import argparse
-import ConfigParser
 import json
 import os
+
+try:
+    import ConfigParser
+except:
+    from configparser import ConfigParser
+
 
 from . import __version__
 
