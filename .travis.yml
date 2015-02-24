@@ -7,4 +7,4 @@ python:
 # command to install dependencies
 install: "pip install ."
 # just to test if command launches
-script: redmine
+script: redmine --help
