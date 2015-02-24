@@ -46,6 +46,15 @@ def get_config_instance(instance_url):
         return {}
     return dict(config_obj.items(instance_url))
 
+def get_api_key():
+    key = get_config_instance("default").get("key", api_key)
+    if key is None:
+        raise Exception(
+            "Missing API key : please provide one in config file or" +
+            "with the command line"
+        )
+    return key
+
 @memoizer.memoize
 def get_log_file_path():
     import os
@@ -58,12 +67,33 @@ def build_url(path):
         raise Exception("Missing Root URL")
     return root_url + path
 
+def put_json(url, payload):
+    global debug_mode
+    key = get_api_key()
+    ssl = (get_config_instance("default").get("verify_ssl", verify_ssl) == "True")
+
+    url = build_url(url)
+    data = None
+    try :
+        response = requests.put(
+            url,
+            verify=ssl,
+            data=json.dumps(payload),
+            auth=(key,""),
+            headers = {'content-type': 'application/json'}
+        )
+
+    except :
+        print("url called : %s %s" % (url, api_key))
+        raise
+    if debug_mode: open(get_log_file_path(),'w').write(json.dumps(data,indent=True))
+    return response
+
+
 def get_json(url, params=None):
     global debug_mode
-    key = get_config_instance("default").get("key", api_key)
+    key = get_api_key()
     ssl = (get_config_instance("default").get("verify_ssl", verify_ssl) == "True")
-    if key is None:
-        raise Exception("Missing API key : please provide one in config file or with the command line")
 
     url = build_url(url)
     data = None
@@ -93,6 +123,33 @@ def cmd_issues(args):
     data = get_json("/issues.json",{"assigned_to_id":user_id, })
 
     print_issues(data)
+
+def cmd_status(args):
+    issue_id = args.issue_id
+    new_status = args.new_status.lower()
+    data = get_json("/issue_statuses.json")
+
+    #Note: it does not work in the silly case were you have 2+ statuses
+    # with same .lower() representation
+    possible_statuses = dict((status['name'].lower(), status['id']) for status in data['issue_statuses'])
+
+    if new_status not in possible_statuses:
+        raise Exception("No such status : {status}".format(status= new_status))
+
+    new_status_id = possible_statuses[new_status]
+    payload = {"issue" : {"status_id": str(new_status_id) }}
+    response = put_json(
+        "/issues/{issue}.json".format(issue=issue_id),
+        payload
+    )
+
+    http_status = response.status_code
+    if http_status == 200:
+        print("updated")
+    elif http_status == 404:
+        print("no such issue")
+    else:
+        print("an error has occured: %d" % http_status)
 
 def cmd_issue(args):
     data = get_json("/issues/{issue}.json".format(issue=args.issue_id))
@@ -135,6 +192,12 @@ def main():
     parser_open = subparsers.add_parser('open', help="open an issue in default browser")
     parser_open.add_argument("issue_id", type=int)
     parser_open.set_defaults(func=cmd_open)
+
+
+    parser_open = subparsers.add_parser('status', help="update an issue's status")
+    parser_open.add_argument("issue_id", type=int)
+    parser_open.add_argument("new_status", type=str)
+    parser_open.set_defaults(func=cmd_status)
 
     parser_issue = subparsers.add_parser('issue', help="show details on an issue")
     parser_issue.add_argument("issue_id")

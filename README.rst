@@ -58,7 +58,7 @@ Command-line syntax
 
     usage: redmine [-h] [--key APIKEY] [--debug] [--root-url ROOT_URL]
                    [--user-id USER_ID] [--version]
-                   {query,issues,open,issue} ...
+                   {query,issues,open,issue,status} ...
 
     positional arguments:
       {query,issues,open,issue}
@@ -66,6 +66,7 @@ Command-line syntax
         issues              show my issues
         open                open an issue in default browser
         issue               show details on an issue
+        status              update an issue's status
 
     optional arguments:
       -h, --help            show this help message and exit
