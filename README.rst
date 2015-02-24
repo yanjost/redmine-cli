@@ -3,6 +3,8 @@ Redmine Cli
 
 This is a small command-line utility to interact with Redmine
 
+[![Build Status](https://travis-ci.org/yanjost/redmine-cli.svg?branch=master)](https://travis-ci.org/yanjost/redmine-cli)
+
 Installation
 -----------------
 
