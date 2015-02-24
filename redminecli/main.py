@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import requests
 import prettytable
 import memoizer
@@ -63,7 +65,7 @@ def get_json(url, params=None):
     try :
         data = requests.get(url,verify=ssl,params=params,auth=(key,"")).json()
     except :
-        print "url called : ",url, params, api_key
+        print("url called : {} params={} api_key={}".format(url, params, api_key))
         raise
     if debug_mode: open(get_log_file_path(),'w').write(json.dumps(data,indent=True))
     return data
@@ -78,7 +80,7 @@ def print_issues(data):
     for issue in data["issues"]:
         table.add_row([issue["id"],issue["priority"]["name"],issue["status"]["name"], issue["subject"]])
 
-    print table
+    print(table)
 
 def cmd_issues(args):
     global user_id
@@ -90,7 +92,7 @@ def cmd_issues(args):
 def cmd_issue(args):
     data = get_json("/issues/{issue}.json".format(issue=args.issue_id))
 
-    print data["issue"]["subject"]
+    print(data["issue"]["subject"])
 
 def cmd_query(args):
     data = get_json("/projects/{project}/issues.json".format(project=args.project),
@@ -114,7 +116,7 @@ def main():
     parser.add_argument("--root-url", help="root url of Redmine instance")
     parser.add_argument("--user-id", help="your Redmine user id")
 
-    parser.add_argument('--version', action='version', version='{}.{}.{}'.format(*__version__))
+    parser.add_argument('--version', action='version', version='{0}.{1}.{2}'.format(*__version__))
 
     parser_query = subparsers.add_parser('query', help="run a saved query by id")
     parser_query.add_argument("project")

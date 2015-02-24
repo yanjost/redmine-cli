@@ -1,4 +1,4 @@
-import os
+import os, sys
 from setuptools import setup, find_packages
 
 from redminecli import __version__
@@ -12,6 +12,9 @@ requirements = [
     "requests==2.2.0",
     "memoizer==0.0.1"
 ]
+
+if sys.version.startswith("2.6"):
+    requirements.append("argparse==1.3.0")
 
 setup(
     name = "Redmine-CLI",
