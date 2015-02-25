@@ -6,6 +6,12 @@ This is a small command-line utility to interact with Redmine
 .. image:: https://travis-ci.org/yanjost/redmine-cli.svg?branch=master
     :target: https://travis-ci.org/yanjost/redmine-cli
 
+Supported python versions
+-------------------------
+
+Supported python versions are from 2.6 to 3.x
+
+
 Installation
 -----------------
 
