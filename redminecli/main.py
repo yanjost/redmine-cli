@@ -153,8 +153,17 @@ def cmd_status(args):
 
 def cmd_issue(args):
     data = get_json("/issues/{issue}.json".format(issue=args.issue_id))
+    is_verbose = args.verbose
 
-    print(data["issue"]["subject"])
+    if is_verbose:
+        print("Title: %s" % data["issue"]["subject"])
+        print("Status: %s" % data["issue"]["status"]["name"])
+        print("Author: %s" % data["issue"]["author"]["name"])
+        print("description:")
+        #TODO: description can be html/markdown etc.
+        print(data["issue"]["description"])
+    else:
+        print(data["issue"]["subject"])
 
 def cmd_query(args):
     data = get_json("/projects/{project}/issues.json".format(project=args.project),
@@ -201,6 +210,13 @@ def main():
 
     parser_issue = subparsers.add_parser('issue', help="show details on an issue")
     parser_issue.add_argument("issue_id")
+    parser_issue.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        default=False
+    )
+
     parser_issue.set_defaults(func=cmd_issue)
 
     args = parser.parse_args()
