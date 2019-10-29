@@ -9,7 +9,7 @@ def read(fname):
 
 requirements = [
     "prettytable==0.7.2",
-    "requests==2.2.0",
+    "requests==2.20.0",
     "memoizer==0.0.1"
 ]
 
